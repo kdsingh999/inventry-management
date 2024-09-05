@@ -7,7 +7,7 @@ export const createCustomer = async (req: Request, res: Response) => {
   try {
     const user = await db.customer.findUnique({
       where: {
-        email,
+        email: email,
       },
     });
 
@@ -16,9 +16,9 @@ export const createCustomer = async (req: Request, res: Response) => {
     }
     const customer = await db.customer.create({
       data: {
-        name,
-        email,
-        phone,
+        name: name,
+        email: email,
+        phone: phone,
       },
     });
     res.status(201).json({ customer });
@@ -42,7 +42,8 @@ export const getCustomers = async (req: Request, res: Response) => {
 
 export const getCustomerById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id: idParam } = req.params;
+    const id = parseInt(idParam);
     const customer = await db.customer.findUnique({
       where: {
         id,
@@ -56,8 +57,8 @@ export const getCustomerById = async (req: Request, res: Response) => {
 
 export const updateCustomer = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    console.log(id);
+    const { id: idParam } = req.params;
+    const id = parseInt(idParam);
     const { name, email, phone } = req.body;
 
     const customer = await db.customer.findUnique({
@@ -89,7 +90,8 @@ export const updateCustomer = async (req: Request, res: Response) => {
 
 export const deleteCustomer = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id: idParam } = req.params;
+    const id = parseInt(idParam);
     const customer = await db.customer.delete({
       where: {
         id,
