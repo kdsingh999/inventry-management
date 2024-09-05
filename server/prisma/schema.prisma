@@ -77,12 +77,30 @@ datasource db {
 
 model Customer{
   id     Int @id @default(autoincrement())
-  name    String
+  customerType  CustomerType @default(RETAIL)
+  firstname    String
+  lastname     String
   email   String   @unique
-  phone   String
+  phone   String   @unique
+  gender  Gender
+  maxCreditLimit  Float
+  maxCreditDays  Int
+  taxPin  String
+  dob     DateTime?
+  nationalID  String @unique
+  country String
+  location String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
+
+enum CustomerType{
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+  OTHER
+}
+
 model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
