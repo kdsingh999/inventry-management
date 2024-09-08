@@ -3,12 +3,13 @@ import { db } from "../db/db";
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
-    const { name, slug } = req.body;
+    const { name, slug, parentId } = req.body;
 
     const category = await db.category.create({
       data: {
         name,
         slug,
+        parentId: parentId ? Number(parentId) : null,
       },
     });
 
@@ -50,7 +51,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
 export const updateCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, slug } = req.body;
+    const { name, slug, parentId } = req.body;
     const category = await db.category.update({
       where: {
         id: Number(id),
@@ -58,6 +59,7 @@ export const updateCategory = async (req: Request, res: Response) => {
       data: {
         name,
         slug,
+        parentId: parentId ? Number(parentId) : null,
       },
     });
     return res.status(200).json({ category });
