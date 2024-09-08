@@ -6,3 +6,4 @@ export * from "./auth-routes";
 export * from "./brand-routes";
 export * from "./category-routes";
 export * from "./unit-routes";
+export * from "./product-routes";

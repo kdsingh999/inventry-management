@@ -10,6 +10,7 @@ import {
   categoryRouter,
   brandRouter,
   unitRouter,
+  productRouter,
 } from "./routers";
 
 const port = process.env.PORT || 3000;
@@ -31,3 +32,4 @@ app.use("/api", authRouter);
 app.use("/api", categoryRouter);
 app.use("/api", brandRouter);
 app.use("/api", unitRouter);
+app.use("/api", productRouter);
