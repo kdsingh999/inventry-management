@@ -73,7 +73,36 @@ datasource db {
 
 
 
+model Supplier{
+  id     Int @id @default(autoincrement())
+  supplierType  SupplierType
+  name            String
+  contactPerson   String
+  email           String   @unique
+  phone           String   @unique
+  location        String
+  country          String
+  website         String?
+  taxPin  String
+  registrationNumber  String? @unique
+  bankAccountNumber  String?
+  bankName  String?
+  IFCCode  String?
+  paymentTerms  String?
+  logo  String?    @default("https://fastly.picsum.photos/id/933/536/354.jpg?hmac=8lVRoNcysARFInMz443q-mc0wbgwHbJgFe5ChEo-YaQ")
+  rating Float? 
+  notes  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
 
+enum SupplierType{
+  MANUFACTURER
+  DISTRIBUTOR
+  WHOLESALE
+  RETAILER
+  OTHER
+}
 
 model Customer{
   id     Int @id @default(autoincrement())
