@@ -6,6 +6,7 @@ import {
   userRouter,
   shopRouter,
   supplierRouter,
+  authRouter,
 } from "./routers";
 
 const port = process.env.PORT || 3000;
@@ -23,3 +24,4 @@ app.use("/api", customerRouter);
 app.use("/api", userRouter);
 app.use("/api", shopRouter);
 app.use("/api", supplierRouter);
+app.use("/api", authRouter);
