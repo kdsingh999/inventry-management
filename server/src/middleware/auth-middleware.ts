@@ -1,6 +1,7 @@
 import jwt, { Secret, JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { db } from "../db/db";
+import { verifyJWT } from "../utils/generate-jwt";
 
 export interface CustomRequest extends Request {
   token: string | JwtPayload;
@@ -14,20 +15,19 @@ export const authMiddleware = async (
 ) => {
   try {
     const token = req.header("Authorization")?.split(" ")[1];
-    console.log(token);
 
     if (!token) {
       return res.status(401).send("Please authenticate");
     }
-    console.log(process.env.JWT_SECRET);
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as Secret);
+
+    const decoded = verifyJWT(token);
     (req as CustomRequest).token = decoded;
 
     (req as CustomRequest).user = await db.user.findUnique({
       where: { id: ((req as CustomRequest).token as JwtPayload).id },
     });
 
-    console.log((req as CustomRequest).user);
+    console.log("after auth", (req as CustomRequest).user);
 
     next();
   } catch (err) {

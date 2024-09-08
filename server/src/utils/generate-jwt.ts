@@ -12,10 +12,11 @@ export const generateJWT = (
   payload: JwtPayload,
   options: CustomJwtPayload = DEFAULT_SIGN_OPTION
 ) => {
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET as Secret;
   return jwt.sign(payload, secret!, options);
 };
 
-export const verifyJWT = (token: string, secret: Secret) => {
+export const verifyJWT = (token: string) => {
+  const secret = process.env.JWT_SECRET as Secret;
   return jwt.verify(token, secret);
 };
