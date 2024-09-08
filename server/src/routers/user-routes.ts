@@ -7,11 +7,12 @@ import {
   updateUser,
   updateUserPassword,
 } from "../controllers";
+import { adminMiddleware, authMiddleware } from "../middleware/auth-middleware";
 
 const router = express.Router();
 
 router.post("/user", createUser);
-router.get("/user", getUsers);
+router.get("/user", authMiddleware, getUsers);
 router.get("/user/:id", getUserById);
 router.put("/user/:id", updateUser);
 router.delete("/user/:id", deleteUser);

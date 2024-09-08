@@ -106,7 +106,7 @@ export const getAttendantsByShopId = async (req: Request, res: Response) => {
       where: {
         attendedShops: {
           some: {
-            id,
+            id: shop.id,
           },
         },
       },

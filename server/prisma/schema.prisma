@@ -73,16 +73,65 @@ datasource db {
 
 
 
+model Supplier{
+  id     Int @id @default(autoincrement())
+  supplierType  SupplierType
+  name            String
+  contactPerson   String
+  email           String   @unique
+  phone           String   @unique
+  location        String
+  country          String
+  website         String?
+  taxPin  String
+  registrationNumber  String? @unique
+  bankAccountNumber  String?
+  bankName  String?
+  IFCCode  String?
+  paymentTerms  String?
+  logo  String?    @default("https://fastly.picsum.photos/id/933/536/354.jpg?hmac=8lVRoNcysARFInMz443q-mc0wbgwHbJgFe5ChEo-YaQ")
+  rating Float? 
+  notes  String?
+  products  Product[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+}
 
+enum SupplierType{
+  MANUFACTURER
+  DISTRIBUTOR
+  WHOLESALE
+  RETAILER
+  OTHER
+}
 
 model Customer{
   id     Int @id @default(autoincrement())
-  name    String
+  customerType  CustomerType @default(RETAIL)
+  firstname    String
+  lastname     String
   email   String   @unique
-  phone   String
+  phone   String   @unique
+  gender  Gender
+  maxCreditLimit  Float
+  maxCreditDays  Int
+  taxPin  String
+  dob     DateTime?
+  nationalID  String @unique
+  country String
+  location String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
+
+enum CustomerType{
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+  OTHER
+}
+
 model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
@@ -123,4 +172,63 @@ enum Gender {
 enum Role {
   ADMIN
   ATTENDANT
+}
+
+model Product{
+  id Int @id @default(autoincrement()) 
+  name String
+  sku String @unique
+  barcode String? @unique
+  batch_number String
+  image String?
+  productCode String @unique
+  slug String @unique
+  supplierId Int
+  tax Float
+  unitId Int
+  brandId Int
+  categoryId Int
+  description String?
+  expiryDate DateTime 
+  alertQuantity Int
+  quantity Int
+  price Float
+  buyingPrice Float
+  supplier Supplier @relation(fields: [supplierId],references: [id])
+  unit Unit @relation(fields: [unitId],references: [id])
+  brand Brand @relation(fields: [brandId],references: [id])
+  category Category @relation(fields: [categoryId],references: [id]) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Brand{
+  id Int @id @default(autoincrement()) 
+  name String
+  slug String @unique
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category{
+  id         Int       @id @default(autoincrement())
+  name       String
+  slug       String    @unique
+  parentId   Int?      // Made this optional to allow categories without a parent
+  products   Product[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  parent     Category? @relation("CategoryParent", fields: [parentId], references: [id])
+  children   Category[] @relation("CategoryParent")
+}
+
+model Unit{
+  id Int @id @default(autoincrement()) 
+  name String
+  slug String @unique
+  abbreviation String
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

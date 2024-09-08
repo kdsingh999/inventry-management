@@ -98,14 +98,11 @@ export const getUsers = async (req: Request, res: Response) => {
   const { page = 1, limit = 10 } = req.query;
 
   try {
-    console.log("Hello");
     var users = await db.user.findMany({
       orderBy: {
         createdAt: "desc",
       },
     });
-
-    console.log(users);
 
     const filteredUsers = users.map((user) => {
       const { password: _, ...rest } = user;

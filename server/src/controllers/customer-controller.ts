@@ -2,7 +2,21 @@ import { Request, Response } from "express";
 import { db } from "../db/db";
 
 export const createCustomer = async (req: Request, res: Response) => {
-  const { name, email, phone } = req.body;
+  const {
+    customerType,
+    firstname,
+    lastname,
+    email,
+    phone,
+    gender,
+    maxCreditLimit,
+    maxCreditDays,
+    taxPin,
+    dob,
+    nationalID,
+    country,
+    location,
+  } = req.body;
 
   try {
     const user = await db.customer.findUnique({
@@ -16,13 +30,24 @@ export const createCustomer = async (req: Request, res: Response) => {
     }
     const customer = await db.customer.create({
       data: {
-        name: name,
-        email: email,
-        phone: phone,
-      },
+        customerType,
+        firstname,
+        lastname,
+        email,
+        phone,
+        gender,
+        maxCreditLimit,
+        maxCreditDays,
+        taxPin,
+        dob,
+        nationalID,
+        country,
+        location,
+      } as any,
     });
     res.status(201).json({ customer });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error, message: "Something went wrong" });
   }
 };
@@ -72,17 +97,17 @@ export const updateCustomer = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Customer not found" });
     }
 
-    const updateCustomer = await db.customer.update({
-      where: {
-        id,
-      },
-      data: {
-        name,
-        email,
-        phone,
-      },
-    });
-    res.status(200).json({ updateCustomer });
+    // const updateCustomer = await db.customer.update({
+    //   where: {
+    //     id,
+    //   },
+    //   data: {
+    //     name,
+    //     email,
+    //     phone,
+    //   },
+    // });
+    // res.status(200).json({ updateCustomer });
   } catch (error) {
     return res.status(500).json({ error, message: "Something went wrong" });
   }
